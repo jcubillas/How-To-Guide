@@ -21,7 +21,7 @@ export default class RouterForm extends React.Component{
 
     render(){
         return (
-            <div>
+            <div className="inputs">
                 <LatLongFields 
                     id="from" 
                     title="From" 
@@ -32,7 +32,7 @@ export default class RouterForm extends React.Component{
                         title="To" 
                         value={this.state.to}
                         onChange={this.onChange} />
-                <button onClick={() => this.props.onFind(this.state)}>Search</button>
+                <button className="btn btn-primary margin-button" onClick={() => this.props.onFind(this.state)}>Search</button>
             </div>
         )
     }
