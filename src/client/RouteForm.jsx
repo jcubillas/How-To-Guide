@@ -6,8 +6,8 @@ export default class RouterForm extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            from : { lat : -34.55931882107318 , lng : -58.456907455139174},
-            to : { lat : -34.58049629262017 , lng : -58.45130747926478}
+            from : { lat : -34.5997051 , lng : -58.398990069999996},
+            to : { lat : -34.58940382 , lng : -58.42911291}
         }
         this.onChange = this.onChange.bind(this)
     }
@@ -24,15 +24,15 @@ export default class RouterForm extends React.Component{
             <div>
                 <LatLongFields 
                     id="from" 
-                    title="Desde" 
+                    title="From" 
                     value={this.state.from}
                     onChange={this.onChange} />
                 <LatLongFields 
                         id="to" 
-                        title="Hasta" 
+                        title="To" 
                         value={this.state.to}
                         onChange={this.onChange} />
-                <button onClick={() => this.props.onFind(this.state)}>Buscar routa</button>
+                <button onClick={() => this.props.onFind(this.state)}>Search</button>
             </div>
         )
     }

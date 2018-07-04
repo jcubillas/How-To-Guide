@@ -19,3 +19,13 @@ body{
 .row {
     padding: 10px !important;
 }
+
+body {
+    padding: 10px !important;
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 3px;
+    padding-top: 15px;
+  }

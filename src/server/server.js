@@ -1,6 +1,6 @@
 const path = require("path")
 const express = require("express")
-const ServerMockup = require("./ServerMockup") // TODO cambiar por la llamada al servicio de laravel
+const ServerMockup = require("./ServerProxy")
 const findLogic = require("./FindLogic")
 const app = express()
 
@@ -29,6 +29,6 @@ app.post("/route",(req,resp) => {
         } )
 })
 
-app.listen(8080,()=>{
+app.listen(8005,()=>{
     console.log("Server UP!")
 })

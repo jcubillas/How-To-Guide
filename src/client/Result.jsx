@@ -25,10 +25,37 @@ export default function Result (props){
     if(! props.route || !props.route.length)
         return null 
     const route = beautifyRoute(props.route)
+    console.log(route)
+    let lastPoint = "";
+    let action = "";
+    let label = "";
+    let classNameAction = "";
+    let classNameLabel = "";
     const lis = route.map( (point,i)  =>{
-        const action = i % 2 == 0 ? "Caminar hasta " : "Bajarse en " 
-        const label = point.name + " del ramal #" + point.branch_id
-        return <li key={i}>{ action + label }</li>
+        if(lastPoint == ""){
+            action = "Caminar hasta " + point.name + ".";
+            label = "Tomar ahi mismo el colectivo del ramal #" + point.branch_id + ".";
+            classNameAction = "fas fa-walking";
+            classNameLabel = "fas fa-bus";
+        }
+        else {
+            if(lastPoint.branch_id != point.branch_id) {
+                action = "Bajarse en " + point.name + ".";
+                label = "Tomar ahi mismo el colectivo del ramal #" + point.branch_id + ".";
+                classNameAction = "fas fa-sort-down";
+                classNameLabel = "fas fa-bus";
+            }
+            else {
+                action = "Bajarse en " + point.name + ".";
+                label = "Caminar hacia destino.";
+                classNameAction = "fas fa-sort-down";
+                classNameLabel = "fas fa-walking";
+            }
+
+        }
+
+        lastPoint = point;
+        return <li key={i}><i className={classNameAction}></i>  {action}<br/><i className={classNameLabel}></i>  {label}</li>
     })
     return <ul>{lis}</ul>
 }

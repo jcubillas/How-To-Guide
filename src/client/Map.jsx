@@ -27,7 +27,7 @@ export default class Map extends React.Component{
     }
       
 
-    render(){
+    /*render(){
         return <div style={{height:500,width:500}} ref={elm=>this.showMap(elm)}></div>
-    }
+    }*/
 }
