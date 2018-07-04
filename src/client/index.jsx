@@ -16,7 +16,24 @@ class App extends React.Component{
 
 
   findRoute(routeData){
-    // console.log(routeData)
+    console.log(routeData)
+
+    fetch("https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDwpxOB_1gTbUHGwkyQ6XdCRXZG6hX3t94" + "&address=" + routeData.from.address)
+      .then( r => r.json() )
+      .then(msg => {
+        routeData.from.lat = msg.results[0].geometry.location.lat;
+        routeData.from.lng = msg.results[0].geometry.location.lng;
+      })
+
+    fetch("https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDwpxOB_1gTbUHGwkyQ6XdCRXZG6hX3t94" + "&address=" + routeData.to.address)
+      .then( r => r.json() )
+      .then(msg => {
+        routeData.to.lat = msg.results[0].geometry.location.lat;
+        routeData.to.lng = msg.results[0].geometry.location.lng;
+      })
+
+      console.log(routeData.to.lat);
+
     fetch("/route",{
       method : "POST",
       headers : {
