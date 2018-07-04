@@ -32,7 +32,6 @@ constructor(data){
 }
 
 // configuración de tiempos y velocidades
-const walkKmh = 1
 const busKmh = 60
 const busWaitH = 0.5 
 const maxWalkKm = 0.8
@@ -125,8 +124,8 @@ module.exports.findRoute = function (busStosData,routeData){
     }
     
     const endsStops = getCloseStops(destination)
-    if(firstStops.length < 1){
-        throw new Error("No existen paradas para empezar")
+    if(endsStops.length < 1){
+        throw new Error("No existen paradas para finalizar")
     }
 
     const maxRoutes = 10000
@@ -147,7 +146,7 @@ module.exports.findRoute = function (busStosData,routeData){
         maxCount --
         allRoutes = allRoutes.filter( (r1,i,self) => self.findIndex( r2 => r2.isEqual(r1)) === i )
         allRoutes.sort( (r1,r2) => r1.distance(destination) - r2.distance(destination) )
-        if(allRoutes[0].distance(destination) < walkKmh ){
+        if(allRoutes[0].distance(destination) < maxWalkKm ){
             go = false
         }
         allRoutes = allRoutes.slice(0,maxRoutes)
