@@ -25,7 +25,8 @@ export default function Result (props){
     if(! props.route || !props.route.length)
         return null 
     const route = beautifyRoute(props.route)
-    console.log(route)
+    console.log("route");
+    console.log(route);
     let lastPoint = "";
     let action = "";
     let label = "";
@@ -41,9 +42,17 @@ export default function Result (props){
         else {
             if(lastPoint.branch_id != point.branch_id) {
                 action = "Bajarse en " + point.name + ".";
-                label = "Tomar ahi mismo el colectivo del ramal #" + point.branch_id + ".";
+                if(i == route.length - 1) {
+                    label = "Caminar hacia destino.";
+                    classNameLabel = "fas fa-walking";
+                }
+                else {
+                    label = "Tomar ahi mismo el colectivo del ramal #" + point.branch_id + ".";
+                    classNameLabel = "fas fa-bus";
+                }
+                    
                 classNameAction = "fas fa-sort-down";
-                classNameLabel = "fas fa-bus";
+                
             }
             else {
                 action = "Bajarse en " + point.name + ".";
