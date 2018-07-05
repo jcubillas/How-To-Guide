@@ -14,49 +14,51 @@ class App extends React.Component{
     this.state = { route : {} }
   }
 
+  toLatLng(address){
+    return fetch("https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDwpxOB_1gTbUHGwkyQ6XdCRXZG6hX3t94&address=" + address)
+      .then( r => r.json() )
+      .then(msg => ({
+        lat : msg.results[0].geometry.location.lat,
+        lng : msg.results[0].geometry.location.lng
+      }))
+  }
 
   findRoute(routeData){
-    console.log(routeData)
-
-    fetch("https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDwpxOB_1gTbUHGwkyQ6XdCRXZG6hX3t94" + "&address=" + routeData.from.address)
-      .then( r => r.json() )
-      .then(msg => {
-        routeData.from.lat = msg.results[0].geometry.location.lat;
-        routeData.from.lng = msg.results[0].geometry.location.lng;
+    const fromP = this.toLatLng(routeData.from.address)
+    const toP = this.toLatLng(routeData.to.address)
+    
+    Promise.all([fromP,toP])
+      .then( ([from,to]) => {
+        fetch("/route",{
+            method : "POST",
+            headers : {
+              "content-type":"application/json"
+            },
+            body : JSON.stringify({from,to})
+          }).then(resp => resp.json())
+            .then(resp => {
+                if(resp.error) {
+                  throw new Error (resp.error)
+                } else return resp  
+            })
+            .then( route => this.setState({route}))
+            .then(this.generateMap)
+            .catch(alert)
       })
-
-    fetch("https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDwpxOB_1gTbUHGwkyQ6XdCRXZG6hX3t94" + "&address=" + routeData.to.address)
-      .then( r => r.json() )
-      .then(msg => {
-        routeData.to.lat = msg.results[0].geometry.location.lat;
-        routeData.to.lng = msg.results[0].geometry.location.lng;
-      })
-
-      console.log(routeData.to.lat);
-
-    fetch("/route",{
-      method : "POST",
-      headers : {
-        "content-type":"application/json"
-      },
-      body : JSON.stringify(routeData)
-    }).then(resp => resp.json())
-      .then( route => this.setState({route}))
-      .then(this.generateMap)
-      .catch(alert)
+    
   }
 
   generateMap() {
     const points = this.state.route;
-    console.log("points");
-    console.log(points);
-    points.map( s => ({lat:s.latitude,lng:s.longitude, number: s.number, name: s.name, branch_id: s.branch_id, id: s.id}));
+    console.log("POINTS");
+    console.log(points)
+    const gPoints = points.map( s => ({lat:parseFloat(s.latitude),lng:parseFloat(s.longitude), number: s.number, name: s.name, branch_id: s.branch_id, id: s.id}));
 
-    const waypoints =  points.slice(1, -1).map( p => ({ location : p , stopover : false}))
+    const waypoints =  gPoints.slice(1, -1).map( p => ({ location : p , stopover : false}))
 
     let request = {
-      origin: points[0],
-      destination: points[points.length - 1],
+      origin: gPoints[0],
+      destination: gPoints[gPoints.length - 1],
       waypoints: waypoints,
       optimizeWaypoints: true,   
       travelMode: 'DRIVING'
@@ -64,10 +66,9 @@ class App extends React.Component{
 
     directionsService.route(request, function(result, status) {
       if (status == 'OK') {
-          routesDisplays[branch.id].setMap(map);
-          routesDisplays[branch.id].setDirections(result);
-          routesDisplays[branch.id].setOptions({
-              suppressMarkers: false,
+          directionsDisplay.setDirections(result);
+          directionsDisplay.setOptions({
+              suppressMarkers: true,
               polylineOptions : {
                   visible: true
               }
@@ -98,6 +99,7 @@ var directionsDisplay = new google.maps.DirectionsRenderer({
       polylineOptions: {strokeColor:"#4a4a4a",strokeWeight:5}, 
       suppressMarkers: false });
 var directionsService = new google.maps.DirectionsService;
+let routesDisplays = [];
 
 var bsas = {lat: -34.6037, lng: -58.3816};
 

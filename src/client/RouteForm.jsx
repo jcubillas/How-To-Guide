@@ -6,8 +6,8 @@ export default class RouterForm extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            from : { lat : -34.5997051 , lng : -58.398990069999996},
-            to : { lat : -34.58940382 , lng : -58.42911291}
+            from : {address : ""},
+            to : { address : ""}
         }
         this.onChange = this.onChange.bind(this)
     }

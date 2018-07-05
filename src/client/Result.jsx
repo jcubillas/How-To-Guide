@@ -2,14 +2,13 @@ import React from 'react'
 
 // borra todas las paradas intermedias
 function beautifyRoute( points ){
-    console.log(points)
+
     return points.reduce( (route,point)=> {
         const resp = route.concat(point)
         
         if(resp.length < 3){
             return resp
         }
-
         if( resp[resp.length - 2].branch_id === resp[resp.length - 1].branch_id &&
             resp[resp.length - 3].branch_id === resp[resp.length - 2].branch_id ){
             resp.splice( resp.length - 2 , 1 )
@@ -25,8 +24,6 @@ export default function Result (props){
     if(! props.route || !props.route.length)
         return null 
     const route = beautifyRoute(props.route)
-    console.log("route");
-    console.log(route);
     let lastPoint = "";
     let action = "";
     let label = "";
@@ -41,9 +38,9 @@ export default function Result (props){
         }
         else {
             if(lastPoint.branch_id != point.branch_id) {
-                action = "Bajarse en " + point.name + ".";
+                action = "  Bajarse en " + point.name + ".";
                 if(i == route.length - 1) {
-                    label = "Caminar hacia destino.";
+                    label = " Caminar hacia destino.";
                     classNameLabel = "fas fa-walking";
                 }
                 else {
@@ -55,8 +52,8 @@ export default function Result (props){
                 
             }
             else {
-                action = "Bajarse en " + point.name + ".";
-                label = "Caminar hacia destino.";
+                action = "  Bajarse en " + point.name + ".";
+                label = " Caminar hacia destino.";
                 classNameAction = "fas fa-sort-down";
                 classNameLabel = "fas fa-walking";
             }
