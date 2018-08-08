@@ -109,7 +109,7 @@ var map = new google.maps.Map(document.getElementById('map'), {
 })
 directionsDisplay.setMap(map);
 
-fetch("/allRoutes")
+/*fetch("/allRoutes")
   .then(resp => resp.json())
   .then(console.log)
-  .catch(console.error)
+  .catch(console.error)*/

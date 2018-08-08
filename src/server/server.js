@@ -1,9 +1,9 @@
 const path = require("path")
 const express = require("express")
-const ServerMockup = require("./ServerProxy")
+const ServerProxy = require("./ServerProxy")
 const findLogic = require("./FindLogic")
 const app = express()
-
+const MongoClient = require('mongodb').MongoClient;
 
 const baseFolder = path.resolve(__dirname,'../../public')
 
@@ -11,15 +11,21 @@ app.use("/",express.static(baseFolder))
 
 app.use(express.json())
 
-app.get("/allRoutes",(req,resp)=>{
-    ServerMockup()
+/*app.get("/allRoutes",(req,resp)=>{
+    ServerProxy.getAllBranches()
         .then( busStopsData => resp.json(busStopsData) )
-})
+})*/
 
 app.post("/route",(req,resp) => {
     const routeData = req.body
-    ServerMockup()
-        .then( busStopsData =>{
+    ServerProxy.getAllBranches()
+        .then(busStopsData =>{
+            console.log("BUS STOPS DATA");
+            console.log(busStopsData);
+            busStopsData = busStopsData.reduce((rest,line)=>rest.concat(line),[])
+                                       .reduce((rest,branch)=>rest.concat(branch),[])
+            console.log("BUS STOPS DATA 2222");
+            console.log(busStopsData);
             const route = findLogic.findRoute(busStopsData,routeData)
             resp.json(route) 
         })
@@ -30,5 +36,5 @@ app.post("/route",(req,resp) => {
 })
 
 app.listen(8085,()=>{
-    console.log("Server UP!")
+    console.log("Server UP!") 
 })

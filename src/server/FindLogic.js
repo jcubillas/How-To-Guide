@@ -1,3 +1,5 @@
+const fetch = require('node-fetch')
+const ServerProxy = require("./ServerProxy")
 
 class Point{
 
@@ -23,12 +25,12 @@ class Point{
 }
 
 class Stop extends Point{
-constructor(data){
-    super(data.latitude,data.longitude)
-    this.id = data.id
-    this.branch_id = data.branch_id
-    this.name = data.name
-}
+    constructor(data){
+        super(data.latitude,data.longitude)
+        this.id = data.id
+        this.branch_id = data.branch_id
+        this.name = data.name
+    }
 }
 
 // configuración de tiempos y velocidades
@@ -38,9 +40,10 @@ const maxWalkKm = 0.8
 
 
 
-module.exports.findRoute = function (busStosData,routeData){
+module.exports.findRoute = function (busStopsData,routeData){
+
     console.log(routeData);
-    const allStops = busStosData
+    const allStops = busStopsData
                     .reduce( (stops,branch) => stops.concat(branch.stops) ,[])
                     .map(s => new Stop(s))
     
@@ -153,10 +156,10 @@ module.exports.findRoute = function (busStosData,routeData){
         allRoutes = allRoutes.slice(0,maxRoutes)
     }
     
-    validRoutes = allRoutes.filter( r => r.distance(destination) < maxWalkKm )
-    if(validRoutes.length){
-        return validRoutes[0].p
+        validRoutes = allRoutes.filter( r => r.distance(destination) < maxWalkKm )
+        if(validRoutes.length){
+            return validRoutes[0].p
+        }
+        throw new Error("No hay rutas disponibles") 
     }
-    throw new Error("No hay rutas disponibles") 
-}
 
