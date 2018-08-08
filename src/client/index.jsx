@@ -50,8 +50,6 @@ class App extends React.Component{
 
   generateMap() {
     const points = this.state.route;
-    console.log("POINTS");
-    console.log(points)
     const gPoints = points.map( s => ({lat:parseFloat(s.latitude),lng:parseFloat(s.longitude), number: s.number, name: s.name, branch_id: s.branch_id, id: s.id}));
 
     const waypoints =  gPoints.slice(1, -1).map( p => ({ location : p , stopover : false}))
@@ -68,7 +66,7 @@ class App extends React.Component{
       if (status == 'OK') {
           directionsDisplay.setDirections(result);
           directionsDisplay.setOptions({
-              suppressMarkers: true,
+              suppressMarkers: false,
               polylineOptions : {
                   visible: true
               }

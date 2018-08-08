@@ -20,12 +20,8 @@ app.post("/route",(req,resp) => {
     const routeData = req.body
     ServerProxy.getAllBranches()
         .then(busStopsData =>{
-            console.log("BUS STOPS DATA");
-            console.log(busStopsData);
             busStopsData = busStopsData.reduce((rest,line)=>rest.concat(line),[])
                                        .reduce((rest,branch)=>rest.concat(branch),[])
-            console.log("BUS STOPS DATA 2222");
-            console.log(busStopsData);
             const route = findLogic.findRoute(busStopsData,routeData)
             resp.json(route) 
         })

@@ -41,7 +41,7 @@ module.exports.getAllBranches = function(){
                 fetch(line.url)
                     .then(r=>r.json())
                     .then(r=>r.map(branches => (branches.stops.forEach((stop)=>{stop.branch_name = branches.name, 
-                        stop.line = line.name, stop.branch_id = line.number + "-" + stop.branch_id }), {...branches})))
+                        stop.line = line.name, stop.branch_id = line.number + " - Ramal " + stop.branch_id }), {...branches})))
             )
             return Promise.all(data)
         })

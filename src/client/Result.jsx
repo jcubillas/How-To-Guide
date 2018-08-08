@@ -29,10 +29,12 @@ export default function Result (props){
     let label = "";
     let classNameAction = "";
     let classNameLabel = "";
+
     const lis = route.map( (point,i)  =>{
+        console.log(point);
         if(lastPoint == ""){
             action = "Caminar hasta " + point.name + ".";
-            label = "Tomar ahi mismo el colectivo del ramal #" + point.branch_id + ".";
+            label = "Tomar ahi mismo el colectivo de la linea "+ point.branch_id + ".";
             classNameAction = "fas fa-walking";
             classNameLabel = "fas fa-bus";
         }
@@ -44,7 +46,7 @@ export default function Result (props){
                     classNameLabel = "fas fa-walking";
                 }
                 else {
-                    label = "Tomar ahi mismo el colectivo del ramal #" + point.branch_id + ".";
+                    label = "Tomar ahi mismo el colectivo de la linea " + point.branch_id + ".";
                     classNameLabel = "fas fa-bus";
                 }
                     
